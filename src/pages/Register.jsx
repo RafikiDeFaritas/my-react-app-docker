@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fetchJSON } from "../lib/http";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "", confirm: "" });
@@ -10,13 +11,12 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setMsg(null);
-
     if (form.password !== form.confirm) {
       return setMsg({ type: "error", text: "Les mots de passe ne correspondent pas" });
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/register", {
+      const data = await fetchJSON("http://localhost:3000/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -25,8 +25,6 @@ export default function Register() {
           password: form.password
         })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Inscription impossible");
       setMsg({ type: "success", text: `Bienvenue ${data.user.username} !` });
       setForm({ username: "", email: "", password: "", confirm: "" });
     } catch (err) {
@@ -60,11 +58,7 @@ export default function Register() {
           {loading ? "Création..." : "S’inscrire"}
         </button>
       </form>
-      {msg && (
-        <p style={{ color: msg.type === "error" ? "crimson" : "green", marginTop: 12 }}>
-          {msg.text}
-        </p>
-      )}
+      {msg && <p style={{ color: msg.type === "error" ? "crimson" : "green", marginTop: 12 }}>{msg.text}</p>}
     </div>
   );
 }

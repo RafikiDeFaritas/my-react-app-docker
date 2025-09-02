@@ -47,6 +47,8 @@ services:
       PGDATABASE: ${POSTGRES_DB}
       CORS_ORIGIN: "http://localhost:5173"
       PORT: 3000
+      JWT_SECRET: "change-this-in-prod"
+      JWT_EXPIRES_IN: "7d"
     ports:
       - "3000:3000"
     depends_on:
