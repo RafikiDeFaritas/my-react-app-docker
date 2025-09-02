@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fetchJSON } from "../lib/http";
+import "../styles/auth.css";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", email: "", password: "", confirm: "" });
@@ -11,6 +12,7 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setMsg(null);
+
     if (form.password !== form.confirm) {
       return setMsg({ type: "error", text: "Les mots de passe ne correspondent pas" });
     }
@@ -35,30 +37,80 @@ export default function Register() {
   };
 
   return (
-    <div style={{ maxWidth: 420, margin: "40px auto", padding: 16 }}>
-      <h1>Créer un compte</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>Username</label><br />
-          <input name="username" value={form.username} onChange={onChange} required />
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="auth-avatar">
+            <img src="/img/avatar.png" alt="avatar" />
+          </div>
+          <h1 className="auth-title">Créer un compte</h1>
         </div>
-        <div>
-          <label>Email</label><br />
-          <input type="email" name="email" value={form.email} onChange={onChange} required />
-        </div>
-        <div>
-          <label>Mot de passe (≥ 8)</label><br />
-          <input type="password" name="password" value={form.password} onChange={onChange} required />
-        </div>
-        <div>
-          <label>Confirmer le mot de passe</label><br />
-          <input type="password" name="confirm" value={form.confirm} onChange={onChange} required />
-        </div>
-        <button type="submit" disabled={loading} style={{ marginTop: 12 }}>
-          {loading ? "Création..." : "S’inscrire"}
-        </button>
-      </form>
-      {msg && <p style={{ color: msg.type === "error" ? "crimson" : "green", marginTop: 12 }}>{msg.text}</p>}
+
+        <form onSubmit={onSubmit}>
+          <div className="auth-field">
+            <input
+              className="auth-input"
+              name="username"
+              placeholder="Identifiant"
+              value={form.username}
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <input
+              className="auth-input"
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <input
+              className="auth-input"
+              type="password"
+              name="password"
+              placeholder="Mot de passe"
+              value={form.password}
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <input
+              className="auth-input"
+              type="password"
+              name="confirm"
+              placeholder="Confirmer le mot de passe"
+              value={form.confirm}
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <div className="auth-actions">
+            <button className="auth-button" type="submit" disabled={loading}>
+              {loading ? "Création..." : "Créer le compte"}
+            </button>
+          </div>
+
+          {msg && (
+            <p style={{ color: msg.type === "error" ? "crimson" : "green", marginTop: 8, textAlign:"center" }}>
+              {msg.text}
+            </p>
+          )}
+        </form>
+      </div>
+
+      <div className="auth-footer-logo">
+        <img src="/img/ser-logo.png" alt="SER Informatique" />
+      </div>
     </div>
   );
 }
