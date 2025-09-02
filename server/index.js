@@ -125,4 +125,8 @@ app.use((err, _req, res, _next) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`API on http://localhost:${port}`));
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => console.log(`API on http://localhost:${port}`));
+}
+
+export { app, pool }; // <- AJOUT
