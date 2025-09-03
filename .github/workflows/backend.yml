@@ -12,8 +12,7 @@ jobs:
     services:
       postgres:
         image: postgres:16-alpine
-        ports:
-          - 5432:5432
+        ports: [ "5432:5432" ]
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -24,10 +23,6 @@ jobs:
           --health-timeout=5s
           --health-retries=10
 
-    defaults:
-      run:
-        working-directory: server  # tes sources backend
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,38 +32,35 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: |
-            server/package-lock.json
+          cache-dependency-path: server/package-lock.json
 
-      - name: Install deps
+      - name: Install deps (server/)
+        working-directory: server
         run: npm ci
 
-      # Optionnel : ping DB avant tests (utile si beforeAll interroge la DB immédiatement)
       - name: Wait for Postgres
         run: |
           for i in {1..30}; do
             if pg_isready -h 127.0.0.1 -p 5432 -U postgres -d db; then
               echo "Postgres is ready"; exit 0
             fi
-            echo "Waiting for Postgres... ($i)"
-            sleep 1
+            echo "Waiting for Postgres... ($i)"; sleep 1
           done
           echo "Postgres not ready in time"; exit 1
         env:
           PGPASSWORD: postgres
 
-      - name: Run unit/API tests (Vitest)
-        run: npm test
+      - name: Run backend tests (Vitest)
+        working-directory: server
         env:
           NODE_ENV: test
-          # Variables lues par server/index.js pour le Pool PG
           PGHOST: 127.0.0.1
           PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: postgres
           PGDATABASE: db
-          # JWT pour les tests
           JWT_SECRET: test-secret
           JWT_EXPIRES_IN: 1h
-          # CORS inutile en CI mais supporté
           CORS_ORIGIN: "http://localhost:5173"
+          CI: true
+        run: npm test

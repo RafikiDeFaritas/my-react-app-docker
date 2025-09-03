@@ -3,9 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "start": "node index.js",
-        "test": "vitest",
-        "test:run": "vitest run"
+    "start": "node index.js",
+    "test": "vitest run --config ./vitest.config.js",
+    "test:watch": "vitest --config ./vitest.config.js"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
@@ -18,4 +18,5 @@
         "supertest": "^7.1.4",
         "vitest": "^3.2.4"
     }
+    
 }
