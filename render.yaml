@@ -15,18 +15,20 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
-      # Ajoute DATABASE_URL manuellement après déploiement (Neon)
+      # Ajoute DATABASE_URL manuellement après création (Neon)
       - key: CORS_ORIGIN
         value: "*"
 
   # ============= Frontend React (Static Site) =============
-  - type: static_site
+  - type: web
     name: myapp-web
+    env: static
     rootDir: .
+    plan: free
     buildCommand: |
       npm ci
       npm run build
-    publishPath: dist
+    staticPublishPath: dist
     routes:
       - type: rewrite
         source: "/*"
