@@ -12,14 +12,21 @@ app.use((req, _res, next) => {
 });
 app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") || true }));
 
-const pool = new Pool({
-  host: process.env.PGHOST || "db",
-  port: Number(process.env.PGPORT || 5432),
-  user: process.env.PGUSER || "appuser",
-  password: process.env.PGPASSWORD || "supersecret",
-  database: process.env.PGDATABASE || "appdb",
-  max: 5
-});
+let pool;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }, // requis pour Neon
+  });
+} else {
+  pool = new Pool({
+    host: process.env.PGHOST || "db",
+    port: Number(process.env.PGPORT || 5432),
+    user: process.env.PGUSER || "appuser",
+    password: process.env.PGPASSWORD || "supersecret",
+    database: process.env.PGDATABASE || "appdb",
+  });
+}
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
