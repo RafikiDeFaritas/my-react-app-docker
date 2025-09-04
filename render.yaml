@@ -1,14 +1,14 @@
 services:
-  # ============= Backend Express =============
+  # ============= Backend Express (Web Service) =============
   - type: web
     name: myapp-api
     env: node
     rootDir: server
     plan: free
-    region: frankfurt
-    buildCommand: "npm ci --omit=dev"
-    startCommand: "node index.js"
-    healthCheckPath: "/api/health"
+    region: frankfurt        # choisis la région proche de toi
+    buildCommand: npm ci --omit=dev
+    startCommand: node index.js
+    healthCheckPath: /api/health
     autoDeploy: true
     envVars:
       - key: NODE_ENV
@@ -16,24 +16,31 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_URL
-        sync: false   # à définir manuellement depuis Neon
+        # Comme Neon est externe à Render, on le définit manuellement après création
+        sync: false
       - key: CORS_ORIGIN
+        # Injecte automatiquement l'URL publique du site statique
         fromService:
-          type: static
+          type: static_site
           name: myapp-web
           property: url
 
-  # ============= Frontend React (Vite) ==========
-  - type: static
+  # ============= Frontend React (Static Site) =============
+  - type: static_site
     name: myapp-web
     rootDir: .
     buildCommand: |
       npm ci
       npm run build
-      cp dist/index.html dist/404.html
     staticPublishPath: dist
+    # SPA fallback (toutes les routes -> index.html)
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: /index.html
     envVars:
       - key: VITE_API_BASE
+        # Injecte automatiquement l'URL publique de l'API
         fromService:
           type: web
           name: myapp-api
