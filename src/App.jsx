@@ -1,19 +1,29 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Register from "./pages/Register.jsx";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Home from "./pages/Home.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <nav style={{ padding: 12 }}>
-        <Link to="/">Home</Link>{" | "}
-        <Link to="/register">Register</Link>{" | "}
-        <Link to="/login">Login</Link>
-      </nav>
       <Routes>
-        <Route path="/" element={<div>Accueil</div>} />
-        <Route path="/register" element={<Register />} />
+        {/* Accueil protégé */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Auth publiques */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
