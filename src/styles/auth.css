@@ -63,11 +63,15 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     outline: none;
-    background: #fff;
+    color: #000;          
+    background-color: #fff; 
   }
   .auth-input:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(78,110,242,.15);
+  }
+  .auth-input::placeholder {
+    color: #555; /* gris foncé pour bien contraster */
   }
   
   .auth-actions { margin-top: 12px; }
