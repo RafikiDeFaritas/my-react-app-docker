@@ -15,10 +15,7 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
-      - key: DATABASE_URL
-        # chaîne Neon à définir manuellement après création (voir étapes)
-        sync: false
-      # Option simple pour démarrer (tu pourras le restreindre ensuite)
+      # Ouvre temporairement CORS pour démarrer. Après déploiement, remplace par l'URL du site.
       - key: CORS_ORIGIN
         value: "*"
 
@@ -30,13 +27,13 @@ staticSites:
       npm ci
       npm run build
     publishPath: dist
-    # SPA fallback pour React Router
+    # SPA fallback (React Router)
     routes:
       - type: rewrite
         source: "/*"
         destination: /index.html
     envVars:
-      # Le front apprend automatiquement l'URL publique de l'API
+      # Le front apprend automatiquement l’URL publique de l’API
       - key: VITE_API_BASE
         fromService:
           type: web
