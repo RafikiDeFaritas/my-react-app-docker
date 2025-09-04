@@ -4,7 +4,7 @@ import { logout } from "../lib/auth";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import "../styles/home.css"; // styles principaux
-import "../components/sidebar.css"; // styles de la sidebar
+import "../styles/sidebar.css"; // styles de la sidebar
 import avatar from "/img/avatar.png";  
 import serLogo from "/img/ser-logo.png";  
 
