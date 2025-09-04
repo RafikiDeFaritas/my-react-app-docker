@@ -5,7 +5,7 @@ services:
     env: node
     rootDir: server
     plan: free
-    region: frankfurt        # choisis la région proche de toi
+    region: frankfurt
     buildCommand: npm ci --omit=dev
     startCommand: node index.js
     healthCheckPath: /api/health
@@ -16,31 +16,28 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: DATABASE_URL
-        # Comme Neon est externe à Render, on le définit manuellement après création
+        # chaîne Neon à définir manuellement après création (voir étapes)
         sync: false
+      # Option simple pour démarrer (tu pourras le restreindre ensuite)
       - key: CORS_ORIGIN
-        # Injecte automatiquement l'URL publique du site statique
-        fromService:
-          type: static_site
-          name: myapp-web
-          property: url
+        value: "*"
 
+staticSites:
   # ============= Frontend React (Static Site) =============
-  - type: static_site
-    name: myapp-web
+  - name: myapp-web
     rootDir: .
     buildCommand: |
       npm ci
       npm run build
-    staticPublishPath: dist
-    # SPA fallback (toutes les routes -> index.html)
+    publishPath: dist
+    # SPA fallback pour React Router
     routes:
       - type: rewrite
         source: "/*"
         destination: /index.html
     envVars:
+      # Le front apprend automatiquement l'URL publique de l'API
       - key: VITE_API_BASE
-        # Injecte automatiquement l'URL publique de l'API
         fromService:
           type: web
           name: myapp-api
