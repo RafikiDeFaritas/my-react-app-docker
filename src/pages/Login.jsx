@@ -3,6 +3,8 @@ import { fetchJSON } from "../lib/http";
 import "../styles/auth.css";
 import avatar from "/img/avatar.png";  
 import serLogo from "/img/ser-logo.png";  
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export default function Login() {
   const [form, setForm] = useState({ identifier: "", password: "" });
@@ -10,6 +12,9 @@ export default function Login() {
   const [msg, setMsg] = useState(null);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +32,7 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       setMsg({ type: "success", text: `Bienvenue ${data.user.username} !` });
       setForm({ identifier: "", password: "" });
+      navigate(from, { replace: true });
     } catch (err) {
       setMsg({ type: "error", text: err.message });
     } finally {
