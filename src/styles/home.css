@@ -12,7 +12,7 @@
   
   .home-topbar{ display:flex; align-items:center; justify-content:center; gap:16px; margin:8px 0 18px; }
   .home-topbar h1{ font-size:40px; font-weight:800; letter-spacing:.5px; margin:0; text-align:center; }
-  .home-select{ margin-left:auto; border:1px solid #cdd6f6; border-radius:10px; padding:8px 12px; background:#fff; }
+  .home-select{ margin-left:auto; color: black ; border:1px solid #cdd6f6; border-radius:10px; padding:8px 12px; background:#fff; }
   
   .home-error{ color:crimson; margin:8px 0 16px; }
   
@@ -84,5 +84,5 @@
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.06));
   }
   .corner-logo.right{ right:24px; }
-  .corner-logo.left{ left:24px; height:80px; opacity:.85; }
+  .corner-logo.left{ left:263px; height:80px; opacity:.85; }
   

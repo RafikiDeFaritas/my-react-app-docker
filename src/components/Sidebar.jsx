@@ -4,7 +4,7 @@ import "./sidebar.css";
 export default function Sidebar({ user, onLogout }) {
   return (
     <aside className="sb">
-      <div className="sb-hello">Bonjour {user?.username || "—"}</div>
+      <div className="sb-hello">Accueil</div>
 
       <nav className="sb-nav">
         <div className="sb-section">
