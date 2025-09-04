@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { fetchJSON } from "../lib/http";
 import "../styles/auth.css";
+import avatar from "/img/avatar.png";  
+import serLogo from "/img/ser-logo.png";  
 
 export default function Login() {
   const [form, setForm] = useState({ identifier: "", password: "" });
@@ -14,7 +16,7 @@ export default function Login() {
     setMsg(null);
     setLoading(true);
     try {
-      const data = await fetchJSON("http://localhost:3000/api/login", {
+        const data = await fetchJSON("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -37,7 +39,7 @@ export default function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="auth-avatar">
-            <img src="/img/avatar.png" alt="avatar" />
+            <img src={avatar} alt="avatar" />
           </div>
           <h1 className="auth-title">Se connecter</h1>
         </div>
@@ -91,7 +93,7 @@ export default function Login() {
       </div>
 
       <div className="auth-footer-logo">
-        <img src="/img/ser-logo.png" alt="SER Informatique" />
+        <img src={serLogo} alt="SER Informatique" />
       </div>
     </div>
   );
