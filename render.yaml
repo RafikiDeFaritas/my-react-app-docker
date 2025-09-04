@@ -15,9 +15,8 @@ services:
         value: production
       - key: JWT_SECRET
         generateValue: true
-      # Ajoute DATABASE_URL manuellement après création (Neon)
       - key: CORS_ORIGIN
-        value: "*"
+        value: "https://myapp-web.onrender.com"
 
   # ============= Frontend React (Static Site) =============
   - type: web
@@ -35,7 +34,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_BASE
-        fromService:
-          type: web
-          name: myapp-api
-          property: url
+        value: "https://myapp-api.onrender.com"
