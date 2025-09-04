@@ -22,7 +22,6 @@ services:
     name: myapp-web
     env: static
     rootDir: .
-    region: frankfurt
     buildCommand: |
       npm ci
       npm run build
