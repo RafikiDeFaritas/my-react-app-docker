@@ -149,7 +149,7 @@ export default function Home() {
             <div className="card-title">Dépôts par mois</div>
             <div className="bars">
               {[
-                { label: "mars 2025", values: [3.8, 2.7, 0.8] },
+                { label: "mars 2025", values: [1.8, 1.7, 0.8] },
                 { label: "avril 2025", values: [0.6, 0.0, 0.0] },
                 { label: "mai 2025", values: [2.2, 0.0, 1.1] },
               ].map((m) => (
